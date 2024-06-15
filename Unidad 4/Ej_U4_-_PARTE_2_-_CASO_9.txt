@@ -1,0 +1,11 @@
+-- 1. Vehiculos (patente) que ingresaron por todos los pasos de San Juan.
+σ Pais='Argentina'Ingreso
+σ Provincia='San Juan'Paso
+-- 2. Personas (todos los datos) que ingresaron por algún paso de la provincia de San Juan, pero no lo hicieron por Neuquén.
+
+-- 3. Vehículos (todos los datos) que ingresaron por Santa Cruz al menos en una ocasión durante el 2022.
+
+-- 4. Personas (todos los datos) que ingresaron tanto como conductor como pasajero.
+-- 5. Provincias por las que no ingresaron visitantes chilenos.
+-- 6. Personas (todos los datos) que ingresaron por todos los pasos que limitan con Chile.
+-- 7. Personas (país y cuil) que ingresaron más de una vez en una fecha para un paso determinado.

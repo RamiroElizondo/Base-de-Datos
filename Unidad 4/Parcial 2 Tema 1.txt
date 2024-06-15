@@ -1,0 +1,25 @@
+A = π NroT (σ AreaC='Base de Datos' Tesis)
+Docente ⨝(Dirige ⨝ A)
+
+S= Alumno ⨝ (π Cuil ( ρ Cuil ← CuilA Tesis))
+Alumno - S
+
+(π Cuil Alumno - π CuilA Tesis) ⨝ Alumno
+
+Dirige2 = ρ Dirige2 Dirige
+Docente ⨝ π Dirige.Cuil (Dirige ⨝ Dirige.Cuil = Dirige2.Cuil ∧ Dirige.NroT ≠ Dirige2.NroT ∧ Dirige.Rol = 'director' ∧ Dirige2.Rol = 'director' Dirige2)
+
+-- A mejorar
+S=ρ S(Alumno ⨝ π CuilA Tesis)
+S⨝S.Cuil = Docente.Cuil Docente
+
+-- Mejor
+(π Cuil Docente ∩ π CuilA Tesis)⨝Docente
+
+
+BD=π NroT (σ AreaC='Base de Datos' Tesis)
+D= Docente ⨝ (σ Rol='director' Dirige ∪ σ Rol='codirector' Dirige)
+π Cuil,NyAp,NroT D ÷ BD
+
+C= π Cuil (σ Rol='codirector' Dirige)
+π Cuil,NyAp (Docente ⨝ C)

@@ -1,0 +1,42 @@
+-- 1. Empleados (nombre y apellido) junto a su salario.
+
+π NomE,Ap,Salario Emp
+
+-- 2. Renombre el nombre de la columna NomE a Nombre, Ap a Apellido y Salario a Sueldo.
+
+(ρ Sueldo ← Salario(ρ Apellido ← Ap (ρ Nombre ← NomE Emp)))
+
+-- 3. Nombre de los empleados junto al nombre del departamento donde trabajan.
+π NomE,CodE,Nom(π NomE,CodE,CodD Emp ⨝ π Nom,CodD Dep)
+
+-- 4. Nombre de los empleados que trabajan en los departamentos de Finanzas (Finance) o Transporte (Shipping).
+π NomE,Ap(Emp ⨝(π CodD(σ Nom='Finance' ∨ Nom='Shipping' Dep)))
+
+-- 5. Trabajos(nombre) donde sus empleados cobran únicamente sueldos superiores a 5000.
+π NomT(Trabajo ⨝(π CodT(σ Salario≥5000 Emp)))
+-- Este
+π NomT(σ SalMin≥5000Trabajo)
+
+-- 6. Empleados que han trabajado (Historia) en el departamento 90 y 60.
+π CodE(σ CodD = 90 Historia) ∩ π CodE (σCodD = 60 Historia)
+-- 7. Empleados que tie⁸nen el mismo sueldo que Alexander Khoo (Código de empleado 115).
+A = ρ A (σ CodE=115 Emp)
+π Emp.CodE, Emp.Salario (Emp ⨝ Emp.CodE ≠ A.CodE ∧ Emp.Salario = A.Salario A)
+
+-- 8. Nombre de los empleados cuyo sueldo es mayor que el de Sigal Tobias (Código de empleado 117).
+A = ρ A (σ CodE=117 Emp)
+π Emp.NomE,Emp.Ap(Emp ⨝ Emp.CodE ≠ A.CodE ∧ Emp.Salario > A.Salario A)
+
+-- 9. Puestos (código y nombre) ocupados (actualmente o en sus puestos anteriores) por el empleado con código 101.
+A = ρ A πCodE,CodT(σ CodE=101 Emp)
+B = ρ B πCodE,CodT(σ CodE=101 Historia)
+π CodT,NomT(Trabajo⨝(A∪B))
+
+-- 10. Nombre del empleado junto al nombre del trabajo que realiza. Se deben incluir todos los empleados aun cuando sean empleados recién contratados (no se los haya asignado aún a ningún departamento o trabajo)
+π NomE,Ap,NomT(Emp⟕Trabajo)
+-- 11. Nombre de los trabajos realizados en todos los departamentos.
+(Emp ⨝ π CodT Trabajo ) ÷ π CodD Dep
+
+ 
+-- 12. Trabajos (todos sus datos) que se realizan en todos los departamentos ubicados en Toronto (ciudad).
+π NomT,SalMin,SalMax,CodD (Trabajo ⨝  Emp)÷ π CodD(Dep⨝(σ Ciudad='Toronto'Localidad))

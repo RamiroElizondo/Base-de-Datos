@@ -1,0 +1,43 @@
+-- 1. Alumnos (todos los datos) que nunca tuvieron aplazos
+ALU ⨝ (π Cuil (σ Nota≥4 EXA)-π Cuil (σ Nota≤4 EXA))
+
+-- 2. Alumnos (nombre) que han rendido (aprobado) Bases de Datos y Bases de Datos Avanzadas.
+A = π Cuil (σ Nota ≥4 (EXA ⨝ (π CodM (σ NomM='Base de Datos' MAT))))
+B = π Cuil (σ Nota ≥4 (EXA ⨝ (π CodM (σ NomM='Base de Datos Avanzadas' MAT))))
+π NomAlu (ALU ⨝(A∩B))
+
+-- 3. Materias (todos los datos) que tienen algún inscripto en el 2023.
+MAT⨝(π CodM (σ year(Fecha)=2023INSC))
+
+-- 4. Exámenes (nombre del alumno, nombre de la materia, fecha y nota) rendidos en forma regular.
+REG = (π Cuil EXA ∩ π Cuil BOL)
+π NomAlu,NomM,Fecha,Nota(((EXA ⨝ REG) ⨝ ALU) ⨝ MAT)
+
+-- 5. Alumnos (cuil y nombre) que han sacado boleta de todas las materias de primer y segundo año.
+π Cuil,NomAlu(ALU⨝(π Cuil,CodM BOL÷(π CodM(σ Ano=1 ∨ Ano=2 MAT))))
+
+-- 6. Alumnos (cuil y nombre) que están inscriptos en materias de distintos años.
+A = π A.Cuil,A.Ano(ρ A(INSC ⨝ MAT))
+A2 = ρ A2 A
+π A.Cuil(A ⨝ A.Cuil = A2.Cuil ∧ A.Ano ≠ A2.Ano A2)
+
+INSC1 = ρ INSC1  (π Cuil,Ano(INSC ⨝ π CodM,Ano MAT))
+INSC2 = ρ INSC2  (π Cuil,Ano(INSC ⨝ π CodM,Ano MAT))
+π INSC1.Cuil (INSC1 ⨝ INSC1.Cuil = INSC2.Cuil ∧ INSC1.Ano ≠ INSC2.Ano INSC2)⨝ π Cuil,NomAlu ALU
+-- 7. Alumnos que han rendido más de una vez la misma materia.
+EXA2 = ρ EXA2 EXA
+ALU⨝(π EXA.Cuil (EXA ⨝ EXA.Cuil = EXA2.Cuil ∧ EXA.CodM = EXA2.CodM ∧ EXA.Fecha ≠ EXA2.Fecha EXA2))
+
+-- 8. Nombre de materias y sus correlativas (nombre también).
+MAT⨝CORRE
+
+-- 9. Alumnos (todos sus datos personales) que están en condiciones de rendir Bases de Datos; es decir, tener rendidas sus correlativas además de haber obtenido la boleta.
+B = ρ B (π CodM σ NomM='Base de Datos' MAT) 
+C = ρ CodM← CodMc(π CORRE.CodMc(B⨝ B.CodM = CORRE.CodM CORRE))
+ALU⨝(π Cuil(BOL ⨝ B) ∩ π Cuil(σ Nota ≥4 EXA⨝C))
+
+-- 10. Exámenes libres (todos los datos), es decir, que se han rendido sin haber sacado la boleta correspondiente.
+EXA ⨝ (π Cuil EXA- π Cuil BOL)
+
+-- 11. Alumnos (nombre) que están al día; es decir, han rendido todas las materias para las que tienen boleta.
+π Cuil,CodM EXA ÷ π CodM BOL

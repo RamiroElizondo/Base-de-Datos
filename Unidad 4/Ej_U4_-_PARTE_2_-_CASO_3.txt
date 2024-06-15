@@ -1,0 +1,33 @@
+-- 1. Programadores (todos sus datos) que han participado en el proyecto código ‘P22-11’ con más de 10 horas. 
+EMPLEADOS  ⨝ (π TRABAJA.Cuil(σ Codp='P22-11' ∧ Rol='programador' TRABAJA))
+
+-- 2. Personas (todos sus datos) que han trabajado como analistas y diseñadores en el año 2023, independientemente sea en el mismo proyecto o no.
+EMPLEADOS ⨝(
+π Cuil(σ Rol='analista' ∧ year(FDesde) = 2023 TRABAJA)∩
+π Cuil(σ Rol='diseñador'∧ year(FDesde) = 2023 TRABAJA))
+
+-- 3. Personas (todos sus datos) que siempre han participado como líderes de proyectos.
+EMPLEADOS ⨝ EMPLEADOS.Cuil = PROYECTOS.Lider (π Lider PROYECTOS)
+-- 4. Personas (cuil) que han participado en todos los proyectos desarrollados para ‘OSSE’ (cliente).
+
+π Cuil, Codp (π Cuil,Codp TRABAJA ⨝  π Lider,Codp,Cliente PROYECTOS) ÷ 
+π Codp (σCliente = 'OSSE' PROYECTOS)
+
+-- 5. Personas (cuil) que han participado con roles diferentes en el mismo proyecto (no considerar los líderes).
+TRABAJA2 = ρ TRABAJA2  TRABAJA
+π TRABAJA.Cuil(TRABAJA ⨝ TRABAJA.Cuil = TRABAJA2.Cuil ∧ 
+TRABAJA.Codp = TRABAJA2.Codp ∧ 
+TRABAJA.Rol ≠ TRABAJA2.Rol TRABAJA2)
+
+-- 6. Personas (cuil) que han participado con roles diferentes en el mismo proyecto (considerar los líderes).
+El lider solo tiene el rol de Lider dentro del mismo proyecto, no puede tener otro rol
+
+-- 7. Equipo (cuil y nombre) de trabajo del proyecto ‘P22-05’ (debe incluirse el líder).
+ (π Cuil,Nom EMPLEADOS) ⨝ (π Cuil (σ Codp='P22-05' TRABAJA)  ∪ π Lider (σ Codp='P22-05' PROYECTOS) )
+
+-- 8. Personas (todos sus datos) que han trabajado como analistas y diseñadores en el año 2023, en el mismo proyecto.
+
+A= ρ A(π Cuil,Codp(σ Rol = 'analista'∧ year(FDesde) = 2023 TRABAJA))
+D= ρ D(π Cuil,Codp(σ Rol = 'diseñador' ∧ year(FDesde) = 2023 TRABAJA))
+
+(A∩D)  ⨝ EMPLEADOS

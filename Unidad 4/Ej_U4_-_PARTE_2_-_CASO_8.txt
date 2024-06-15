@@ -1,0 +1,24 @@
+-- 1. Leyes (todos sus datos) aprobadas en el año 2000, a la que adhirieron las 3 provincias de Cuyo (San Juan, San Luis y Mendoza).
+σ year(Fecha)=2000 LEY ⨝  (π Num(σ NomP='San Juan'Adhiere) ∩ π Num(σ NomP='San Luis'Adhiere)∩ π Num(σ NomP='Mendoza'Adhiere))
+
+-- 2. Leyes (número, nombre) que fueron votadas afirmativamente sólo por representantes de “Cambiemos”.
+
+
+SD =π Cuil(σ Partido='Cambiemos'DIP) ∪ π Cuil(σ Partido='Cambiemos'SEN)
+NSD =π Cuil(σ Partido≠'Cambiemos'DIP) ∪ π Cuil(σ Partido≠'Cambiemos'SEN)
+π Num,Nombre LEY ⨝(π Num(SD ⨝ ((σ Voto='SI'VotosD) ∪ (σ Voto='SI'VotosS))) - π Num(NSD ⨝ ((σ Voto='SI'VotosD) ∪ (σ Voto='SI'VotosS))))
+
+-- 3. Provincias (nombre) que han adherido a más de una ley durante el 2020.
+Adhiere2=ρ Adhiere2 Adhiere
+π Adhiere.NomP (Adhiere ⨝ Adhiere.NomP = Adhiere2.NomP ∧ Adhiere.Num ≠ Adhiere2.Num ∧ year(Adhiere.Fecha) = 2020 ∧ year(Adhiere2.Fecha) = 2020 Adhiere2)
+
+-- 4. Cuil y nombre de todos los representantes de la provincia de San Juan, incluyendo diputados y senadores.
+π Cuil,Nombre (σ Prov='San Juan' DIP) ∪ π Cuil,Nombre (σ Prov='San Juan' SEN)
+
+-- 5. Leyes (número, nombre y cantidad de artículos) a las que adhirieron todas las provincias.
+π Num,Nombre,CantArt LEY ⨝(π Num,NomP Adhiere ÷ π NomP Prov)
+
+-- 6. Leyes (número, nombre de la ley y nombre y apellido del diputado que la propuso) que han sido rechazadas por algún diputado del mismo partido político que el diputado que la propuso.
+A = ρ A (π Cuil,Num,NombreL (ρ NombreL ← Nombre LEY) ⨝ (π Cuil,NombreP,Partido (ρ NombreP ← Nombre DIP)))
+Votos = ρ Votos (VotosD ⨝ π Cuil,Nombre,Partido DIP)
+π A.Num,A.NombreL,NombreP(A ⨝ A.Num = Votos.Num ∧ A.Partido = Votos.Partido ∧ Votos.Voto='NO' Votos)

@@ -1,0 +1,38 @@
+-- 1.Proyectos (código, inversión) desarrollados durante el 2023 en Argentina por la empresa “Techint”.
+π cod,inversion(σ year(fechai) = 2023 ∧ pais ='Argentina' PROY)
+
+-- 2. Geólogos argentinos (todos los datos) que han trabajado en más de una ocasión en el mismo proyecto.
+
+G = σ pais='Argentina' GEO
+TRA2 = ρ TRA2 TRA
+P = TRA ⨝ TRA.cuil = TRA2.cuil ∧ TRA.cod = TRA2.cod ∧ TRA.fecha ≠ TRA2.fecha TRA2
+G ⨝ π TRA.cuil P
+
+-- 3. Geólogos que residen en el país donde nacieron.
+σ paisr = pais GEO
+
+-- 4. Empresas (todos los datos) donde trabajaron geólogos tanto de nacionalidad argentina como chilena.
+EMP⨝(π num (PROY⨝(π cod σ pais='Argentina' TRA ∩ π cod σ pais='Chile'TRA)))
+
+
+-- 5. Proyectos (código, inversión y país) donde trabajaron únicamente extranjeros.
+TRA2 = ρ TRA2 (ρ paisT ← pais (ρ codT ← cod TRA))
+π cod,inversion,pais (PROY ⨝ PROY.cod = TRA2.codT ∧ PROY.pais ≠ TRA2.paisT TRA2)
+
+-- 6. Geólogos (todos los datos) que trabajaron en todos los proyectos de la empresa “Barrick”.
+GEO⨝(π cuil,cod TRA ÷ π cod(PROY ⨝ (σ nombre = 'Barrick'EMP)))
+
+-- 7. Geólogos (todos los datos) argentinos y/o chilenos que trabajaron en proyectos de la empresa “Techint”.
+GEO⨝((σ pais='Argentina' TRA ∪ σ pais='Chile' TRA) ⨝ π cod(PROY ⨝ (σ nombre = 'Techint'EMP)))
+
+-- 8. Geólogos (todos los datos) argentinos y/o chilenos que trabajaron únicamente en proyectos de la empresa “Techint”.
+G = ρ G (σ pais='Argentina' TRA ∪ σ pais='Chile' TRA)
+P = ρ P (π cod(PROY ⨝ (σ nombre = 'Techint'EMP)))
+R1 = π cuil(G⨝P)
+
+G1 = ρ G1 (σ pais='Argentina' TRA ∪ σ pais='Chile' TRA)
+P1 = ρ P1 (π cod(PROY ⨝ (σ nombre ≠ 'Techint'EMP)))
+R2 = π cuil(G1⨝P1)
+
+GEO⨝(R1-R2)
+

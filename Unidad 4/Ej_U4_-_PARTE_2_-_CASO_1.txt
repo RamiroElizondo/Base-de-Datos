@@ -1,0 +1,67 @@
+-- 1)
+π Nom,Edad,Zona(PERS)
+
+-- 2)
+π Zona(PERS)
+
+-- 3)
+π Zona(CLUB)
+
+-- 4)
+πZona(PERS)∪πZona(CLUB)
+
+-- 5)
+πNomc (σ Zona ='Rivadavia'∨Zona ='Capital'∨Zona ='Desamparados'(CLUB))
+
+-- 6)
+π Nom,Cuil,Edad (PERS ⨝ PRAC)
+
+-- 7) Cuil de las personas que practican tenis. 
+π Cuil PERS ⨝ (πCuil(PRAC ⨝ Nomd='Tenis' DEPO))
+
+-- 8) Nombre de los clubes donde se practica fútbol
+π Nomc( CLUB ⨝ (πCodc(PRAC ⨝ Nomd='Fútbol' DEPO)))
+
+-- 9) Para todas las personas que practican deportes: cuil y nombre de la persona, nombre del deporte y el nombre del club correspondiente.
+π Nom,Cuil,Nomc,Nomd (((PERS ⨝ PRAC) ⨝ DEPO) ⨝ PRAC.Codc=CLUB.Codc CLUB)
+
+-- 10) Cuil y nombre de las personas que practican (simultáneamente) los deportes D01, D22 y D10 (códigos).
+
+(π Nom,Cuil(σ PRAC.Codd='D01' (PERS ⨝ PRAC)))∩
+(π Nom,Cuil(σ PRAC.Codd='D10' (PERS ⨝ PRAC)))∩ 
+(π Nom,Cuil(σ PRAC.Codd='D22' (PERS ⨝ PRAC)))
+
+-- 11) Cuit y nombre de las personas que no practican deportes en Ausonia
+(π Cuil,Nom PERS) - π Cuil,Nom ((PERS ⨝ PRAC) ⨝ π Codc(σ Nomc='Ausonia' CLUB))
+
+-- 12) Cuil de las personas que practican deportes en Ausonia o bien practican en la UVT.
+π Cuil,Nom ((PERS ⨝ PRAC) ⨝ π Codc(σ Nomc='Ausonia' ∨ Nomc='UVT' CLUB))
+
+-- 13) Código de los deportes que son practicados solamente por hombres.
+π Codd( π Codd(σ Sexo='M'(PERS ⨝ PRAC)) - π Codd(σ Sexo='F'(PERS ⨝ PRAC)) )
+
+-- 14) Cuil, nombre y dirección de las personas que viven en la misma zona que Juan Pérez, Cuil 1204984252
+A = π Zona(σ Cuil=1204984252 PERS)
+π Cuil,Nom,Dir (PERS ⨝ A)
+
+-- 15) Cuil y nombre de las personas mayores que Ana García (CUIL: 7184984253).
+A = ρ EdadA ← Edad (π Edad( σ Nom='Ana García' PERS)) 
+π Cuil,Nom(PERS ⨝ PERS.Edad > PERS.EdadA (A) )
+
+-- 16) Cuil y nombre de las personas que practican en clubes que están ubicados en la misma zona en la que ellos viven.
+(π Cuil,Nom,Zona,Codc (PERS⨝PRAC)) ⨝ (π Codc,Zona CLUB)
+
+-- 17) Nombre de todas las personas junto al nombre del deporte que practica. Se deben incluir todas las personas registradas más allá que no estén practicando algún deporte.
+π Nom,Nomd ((PRAC⨝DEPO) ⟖ PERS)
+
+-- 18) Nombre de los deportes practicados en todos los clubes.
+π Nomd(( π Codd,Codc PRAC ÷ π Codc CLUB ) ⨝ DEPO)
+
+-- 19) Clubes (Codc) en los que se practican todos los deportes de balón (clase)
+( π Codc,Codd(PRAC) ) ÷ ( π Codd (σ Clase='Balón' DEPO) )
+
+-- 20) Personas (todos sus datos personales) que practican todos los deportes.
+(( π Cuil,Codd PRAC ÷ π Codd DEPO ) ⨝ PERS)
+
+-- 21) Nombre de las personas que practican todos los deportes que se practican en el Banco Hispano.
+π Nom(( π Cuil,Codd PRAC ÷ π Codd (σ Nomc='Banco Hispano' (PRAC⨝CLUB)) ) ⨝ PERS)

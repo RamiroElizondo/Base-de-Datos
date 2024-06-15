@@ -1,0 +1,103 @@
+group: caso leyes RA
+
+LEY = {
+	Num:number, Nombre:string, CantArt:number, Fecha:date, Ambito:string, Cuil:number
+  	20424         , 'Explotacion de Fosfato' , 14 , 2000-12-21 , 'Mineria' 	      , 12432123     
+  	19654         , 'Explotacion de salmon'  , 11 , 2000-11-22 , 'Pesca'   	      , 12432123   
+  	11266         , 'Recusos Renovables'     , 20 , 2002-12-22 , 'Medio Ambiente' , 15987123
+  	20425         , 'Desechos peligrosos'    , 20 , 2002-12-22 , 'Medio Ambiente' , 12555446   
+}
+
+DIP = {
+    Cuil:number, Nombre:string, Tel:string, Prov:string, Partido:string, FechaD:date, FechaH:date
+    12432123  , 'Jose'  , '26455875634', 'San Juan' , 'Cambiemos' 	     , 2001-12-21 , 2004-12-21
+    15987123  , 'Pedro' , '26455889120', 'Mendoza'  , 'Justicialista'        , 2002-12-15 , 2009-12-21
+    12555446  , 'Luis'  , '26455889333', 'San Luis' , 'Union Civica Radical' , 2006-12-11 , 2012-12-21
+    13555446  , 'Juan'  , '26423889333', 'San Luis' , 'Union Civica Radical' , 2002-12-18 , 2012-12-21
+    
+
+}
+
+SEN = {
+    Cuil:number, Nombre:string, Tel:string, Mat:number, Prov:string, Partido:string, FechaD:date, FechaH:date
+     22442123 , 'Carlos' ,    '26495875334' , 1235 , 'Mendoza'  , 'Cambiemos'     , 2001-11-17 , 2008-12-16
+     28442173 , 'Luis'   ,    '2642687334'  , 3745 , 'San Juan' , 'Justicialista' , 2000-10-14 , 2005-12-17
+     23442173 , 'Luis'   ,    '2642787334'  , 3745 , 'San Luis' , 'Justicialista' , 2001-12-14 , 2007-12-11
+}
+
+VotosD = {
+      Cuil:number, Num:number, Voto:string
+      12432123,   20424 ,  'SI'
+      12432123,   19654 ,  'SI'
+      12432123,   11266 ,  'NO'
+      12432123,   20425 ,  'AB'
+      15987123,   20424,   'NO'
+      15987123,   19654 ,  'SI'
+      15987123,   11266 ,  'SI'
+      15987123,   20425 ,  'NO'
+      12555446,   20424,   'NO'
+      12555446,   19654 ,  'SI'
+      12555446,   11266 ,  'NO'
+      12555446,   20425 ,  'SI'
+      13555446,   20424,   'NO'
+      13555446,   19654 ,  'NO'
+      13555446,   11266 ,  'NO'
+      13555446,   20425 ,  'NO'
+}
+
+VotosS = {
+      Cuil:number, Num:number, Voto:string
+      22442123,   20424 ,  'SI'
+      22442123,   19654 ,  'SI'
+      22442123,   11266 ,  'SI'
+      22442123,   20425 ,  'SI'
+      28442173,   20424 ,  'AB'
+      28442173,   19654 ,  'NO'
+      28442173,   11266 ,  'NO'
+      28442173,   20425 ,  'NO'
+      23442173,   20424 ,  'AB'
+      23442173,   19654 ,  'NO'
+      23442173,   11266 ,  'SI'
+      23442173,   20425 ,  'NO'
+}
+
+Adhiere = {
+    NomP:string, Num:number, Fecha:date
+    'San Juan',  20424, 2018-12-17
+    'San Juan',  19654, 2018-11-18
+    'San Juan',  11266, 2018-12-15
+    'San Juan',  20425, 2005-02-18
+    'Mendoza' ,  20424, 2001-12-21
+    'San Luis',  20424, 2002-04-25
+}
+
+
+Prov = {
+    NomP:string, Superficie:number, CantDip:number, Cantis:number
+    'San Juan',   89, 1, 1
+    'Mendoza' ,   54, 1, 1
+    'San Luis',   76, 2, 1
+}
+
+
+12432123
+22442123
+
+15987123
+12555446
+13555446
+28442173
+23442173
+
+
+
+
+12432123	20424	'SI'
+12432123	19654	'SI'
+22442123	20424	'SI'
+22442123	19654	'SI'
+22442123	11266	'SI'
+22442123	20425	'SI'
+
+
+A = ρ A (π Cuil,Num,NombreL (ρ NombreL ← Nombre LEY) ⨝ π Cuil,Nombre,Partido (ρ NombreP ← NombreDIP))

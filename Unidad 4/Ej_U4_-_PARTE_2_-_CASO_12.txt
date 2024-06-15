@@ -1,0 +1,22 @@
+-- 1. Planetas (nombre, cantidad de años luz) descubiertos únicamente por la Universidad de Texas (es decir, todos los descubridores pertenecen a esa universidad).
+A= π NomAs(σ Uni≠'Universidad de Texas' Astronomo)
+Planeta⨝(Descubrio ⨝( π NomAs Descubrio -A)  )
+
+
+Descubrio2 = ρ Descubrio2 Descubrio
+Descubrio ⨝ Descubrio.NomP = Descubrio2.NomP ∧ Descubrio.NomAs ≠ Descubrio2.NomAs Descubrio2
+
+
+TEX = π NomAs (σ Uni='Universidad de Texas' Astronomo)
+( π NomAs Descubrio -TEX)
+
+-- 2. Astrónomos (nombre y universidad) que han descubierto planetas y/o satélites durante el período 1950-2016.
+
+σ year(FechaDesc) ≥ 2016 ∧ year(FechaDesc) ≤ 2017 Planeta
+
+
+-- 3. Planetas (nombre, cantidad de años luz) junto al/a los Astrónomo/s (nombre) que lo descubrieron.
+π NomP,Cantal,NomAs (Planeta ⨝ (Descubrio ⨝ Astronomo))
+
+-- 4. Astrónomos de la universidad de Antioquía, que descubrieron tanto planetas como satélites.
+-- 5. Planetas (nombre y fecha de descubrimiento) que no tienen satélites.

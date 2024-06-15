@@ -1,0 +1,28 @@
+-- 1. Nombre y cuil de todos los clientes del banco.
+A=π Cuil (ρ Cuil ← Cuil1 CCTES) ∪ π Cuil (ρ Cuil ← Cuil2 CCTES)
+B=π Cuil (ρ Cuil ← Cuil1 CAHORRO) ∪ π Cuil (ρ Cuil ← Cuil2 CAHORRO)
+π Cuil,Nombre(PERS ⨝ (A∪B))
+
+
+-- 2. Nombre de las personas que poseen alguna cuenta corriente o caja de ahorro.
+A= ρ Cuil ← Cuil1 (π Cuil1 CCTES) ∪ (π Cuil2 CCTES)
+B=π Cuil (ρ Cuil ← Cuil1 CAHORRO) ∪ π Cuil (ρ Cuil ← Cuil2 CAHORRO)
+π Nombre(PERS ⨝ (A∪B))
+
+-- 3. Cuentas corrientes que nunca generaron saldos negativos.
+π Nro CCTES - (π Nro(σ Saldo≥0 (ρ Nro ← NroCuenta TRANSAC))⨝ π Nro CCTES)
+
+-- 4. Personas (cuil y nombre) que tienen dinero disponible (tienen saldo a favor en alguna cta. corriente y/o en alguna caja de ahorro).
+CC = π Cuil1, Cuil2 (σ SaldoActual≥0 CCTES)
+CA = π Cuil1, Cuil2 (σ SaldoActual≥0 CAHORRO)
+P = π Cuil1, Cuil2 CC ∪  π Cuil1, Cuil2 CA
+π Nombre(PERS⨝(ρ Cuil ← Cuil1 (π Cuil1 CCTES) ∪ (π Cuil2 CCTES)))
+
+-- 5. Cuentas corrientes (número y saldo) a las que se les efectuaron todos los tipos de transacción posible.
+
+((π Nro,SaldoActual CCTES ⨝ π Nro,IdTipo(ρ Nro ← NroCuenta TRANSAC))÷ π IdTipo TIPO_TRANS)
+
+-- 6. Cuentas corrientes que tuvieron en algún momento su saldo en rojo, es decir, con saldo negativo.
+(π Nro CCTES ⨝ π Nro (σ Saldo≤0(ρ Nro ← NroCuenta TRANSAC)))
+
+-- 7. Personas (todos los datos) que efectuaron en más de una ocasión transacciones en sus cuentas corrientes, dejando el saldo en rojo.
